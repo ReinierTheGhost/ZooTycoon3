@@ -1,5 +1,11 @@
 package com.legends;
 
+import org.joml.Matrix4f;
+import org.lwjgl.system.MemoryStack;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.lwjgl.opengl.GL30.*;
 
 public class ShaderManager {
@@ -7,11 +13,36 @@ public class ShaderManager {
     private final int programID;
     private int vertexShaderID, fragmentShaderID;
 
+    private final Map<String, Integer> uniforms;
+
     public ShaderManager() throws Exception {
         programID = glCreateProgram();
         if (programID == 0){
             throw new Exception("Could not Create shader!");
         }
+
+        uniforms = new HashMap<>();
+    }
+
+    public void createUniform(String uniformName) throws Exception {
+        int uniformLocation = glGetUniformLocation(programID, uniformName);
+        if (uniformLocation < 0){
+            throw new Exception("Could not find Uniform " + uniformName);
+        }
+        uniforms.put(uniformName, uniformLocation);
+
+    }
+
+    public void setUniforms(String uniformName, Matrix4f value){
+        try(MemoryStack stack = MemoryStack.stackPush()) {
+            glUniformMatrix4fv(uniforms.get(uniformName), false,
+                    value.get(stack.mallocFloat(16)));
+        }
+
+    }
+
+    public void setUniform(String uniformName, int value){
+        glUniform1i(uniforms.get(uniformName), value);
     }
 
     public void createVertexShader(String shaderCode) throws Exception{
@@ -43,7 +74,7 @@ public class ShaderManager {
     public void link() throws Exception {
         glLinkProgram(programID);
 
-        if (glGetShaderi(programID, GL_LINK_STATUS) == 0){
+        if (glGetProgrami(programID, GL_LINK_STATUS) == 0){
             throw new Exception("Error linking shader code Info: "
                     + glGetProgramInfoLog(programID, 1024));
         }

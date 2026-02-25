@@ -2,6 +2,7 @@ package com.legends.test;
 
 import com.legends.*;
 import com.legends.entity.Model;
+import com.legends.entity.Texture;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -30,12 +31,10 @@ public class TestGame implements ILogic {
         renderer.init();
 
         float[] vertices = {
-                -0.5f, 0.5f, 0f,
+                -0.5f,  0.5f, 0f,
                 -0.5f, -0.5f, 0f,
                 0.5f, -0.5f, 0f,
-                0.5f, -0.5f, 0f,
-                0.5f, 0.5f, 0f,
-                -0.5f, 0.5f, 0f
+                0.5f,  0.5f, 0f,
         };
 
         int[] indices = {
@@ -43,7 +42,15 @@ public class TestGame implements ILogic {
                 3, 1, 2
         };
 
-        model = loader.loadModel(vertices, indices);
+        float[] textureCoords = {
+                0, 0,
+                0, 1,
+                1, 1,
+                1, 0
+        };
+
+        model = loader.loadModel(vertices, textureCoords, indices);
+        model.setTexture(new Texture(loader.loadTexture("textures/background.png")));
     }
 
     @Override

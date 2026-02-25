@@ -18,15 +18,21 @@ public class RenderManager {
         shader.createVertexShader(Utils.loadResource("/shaders/vertex.vs"));
         shader.createFragmentShader(Utils.loadResource("/shaders/fragment.fs"));
         shader.link();
+        shader.createUniform("textureSampler");
     }
 
     public void render(Model model){
         clear();
         shader.bind();
+        shader.setUniform("textureSampler", 0);
         glBindVertexArray(model.getId());
         glEnableVertexAttribArray(0);
-        glDrawArrays(GL_TRIANGLES, 0, model.getVertexCount());
+        glEnableVertexAttribArray(1);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, model.getTexture().getId());
+        glDrawElements(GL_TRIANGLES, model.getVertexCount(), GL_UNSIGNED_INT, 0);
         glDisableVertexAttribArray(0);
+        glDisableVertexAttribArray(1);
         glBindVertexArray(0);
         shader.unbind();
     }

@@ -2,7 +2,10 @@ package com.legends;
 
 import com.legends.entity.Model;
 import com.legends.utils.Utils;
+import org.lwjgl.stb.STBImage;
+import org.lwjgl.system.MemoryStack;
 
+import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
@@ -18,13 +21,42 @@ public class ObjectLoader {
      */
     private List<Integer> vaos = new ArrayList<>();
     private List<Integer> vbos = new ArrayList<>();
+    private List<Integer> textures = new ArrayList<>();
 
-    public Model loadModel(float[] vertices, int[] indices){
+    public Model loadModel(float[] vertices, float[] texturesCoords, int[] indices){
         int id = createVAO();
         storeIndicesBuffer(indices);
         storeDataInAttribList(0, 3, vertices);
+        storeDataInAttribList(1, 2, texturesCoords);
         unbind();
         return new Model(id, vertices.length / 3);
+    }
+
+    public int loadTexture(String filename) throws Exception{
+        int width, height;
+        ByteBuffer buffer;
+        try(MemoryStack stack = MemoryStack.stackPush()) {
+            IntBuffer w = stack.mallocInt(1);
+            IntBuffer h = stack.mallocInt(1);
+            IntBuffer c = stack.mallocInt(1);
+
+            buffer = STBImage.stbi_load(filename, w, h, c, 4);
+            if(buffer == null){
+                throw new Exception("Image File " + filename + " not loaded " + STBImage.stbi_failure_reason());
+            }
+
+            width = w.get();
+            height = h.get();
+        }
+
+        int id = glGenTextures();
+        textures.add(id);
+        glBindTexture(GL_TEXTURE_2D, id);
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+        glGenerateMipmap(GL_TEXTURE_2D);
+        STBImage.stbi_image_free(buffer);
+        return id;
     }
 
     private int createVAO(){
@@ -62,6 +94,9 @@ public class ObjectLoader {
         }
         for (int vbo : vbos){
             glDeleteBuffers(vbo);
+        }
+        for (int texture : textures){
+            glDeleteTextures(texture);
         }
     }
 }
