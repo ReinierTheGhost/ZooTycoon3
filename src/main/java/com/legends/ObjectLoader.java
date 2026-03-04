@@ -29,35 +29,74 @@ public class ObjectLoader {
         storeDataInAttribList(0, 3, vertices);
         storeDataInAttribList(1, 2, texturesCoords);
         unbind();
-        return new Model(id, vertices.length / 3);
+        return new Model(id, indices.length);
     }
 
-    public int loadTexture(String filename) throws Exception{
+
+    public int loadTexture(String resourcePath) throws Exception {
         int width, height;
-        ByteBuffer buffer;
-        try(MemoryStack stack = MemoryStack.stackPush()) {
+        ByteBuffer image;
+        ByteBuffer fileBuffer = null;
+
+        try (MemoryStack stack = MemoryStack.stackPush()) {
             IntBuffer w = stack.mallocInt(1);
             IntBuffer h = stack.mallocInt(1);
             IntBuffer c = stack.mallocInt(1);
 
-            buffer = STBImage.stbi_load(filename, w, h, c, 4);
-            if(buffer == null){
-                throw new Exception("Image File " + filename + " not loaded " + STBImage.stbi_failure_reason());
+            fileBuffer = Utils.loadResourceToByteBuffer(resourcePath);
+
+            image = STBImage.stbi_load_from_memory(fileBuffer, w, h, c, 4);
+            if (image == null) {
+                throw new Exception("Image resource " + resourcePath + " not loaded: " + STBImage.stbi_failure_reason());
             }
 
-            width = w.get();
-            height = h.get();
+            width = w.get(0);
+            height = h.get(0);
+        } finally {
+            if (fileBuffer != null) {
+                org.lwjgl.system.MemoryUtil.memFree(fileBuffer);
+            }
         }
 
         int id = glGenTextures();
         textures.add(id);
+
         glBindTexture(GL_TEXTURE_2D, id);
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
         glGenerateMipmap(GL_TEXTURE_2D);
-        STBImage.stbi_image_free(buffer);
+
+        STBImage.stbi_image_free(image);
         return id;
     }
+
+//    public int loadTexture(String filename) throws Exception{
+//        int width, height;
+//        ByteBuffer buffer;
+//        try(MemoryStack stack = MemoryStack.stackPush()) {
+//            IntBuffer w = stack.mallocInt(1);
+//            IntBuffer h = stack.mallocInt(1);
+//            IntBuffer c = stack.mallocInt(1);
+//
+//            buffer = STBImage.stbi_load(filename, w, h, c, 4);
+//            if(buffer == null){
+//                throw new Exception("Image File " + filename + " not loaded " + STBImage.stbi_failure_reason());
+//            }
+//
+//            width = w.get();
+//            height = h.get();
+//        }
+//
+//        int id = glGenTextures();
+//        textures.add(id);
+//        glBindTexture(GL_TEXTURE_2D, id);
+//        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+//        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+//        glGenerateMipmap(GL_TEXTURE_2D);
+//        STBImage.stbi_image_free(buffer);
+//        return id;
+//    }
 
     private int createVAO(){
         int id = glGenVertexArrays();

@@ -3,6 +3,7 @@ package com.legends.utils;
 import org.lwjgl.system.MemoryUtil;
 
 import java.io.InputStream;
+import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.nio.charset.StandardCharsets;
@@ -29,5 +30,18 @@ public class Utils {
             result = scanner.useDelimiter("\\A").next();
         }
         return result;
+    }
+
+    public static ByteBuffer loadResourceToByteBuffer(String resourcePath) throws Exception {
+        try (InputStream in = Utils.class.getResourceAsStream(resourcePath)) {
+            if (in == null) {
+                throw new IllegalArgumentException("Resource not found: " + resourcePath);
+            }
+            byte[] bytes = in.readAllBytes();
+            ByteBuffer buffer = MemoryUtil.memAlloc(bytes.length);
+            buffer.put(bytes);
+            buffer.flip();
+            return buffer;
+        }
     }
 }
