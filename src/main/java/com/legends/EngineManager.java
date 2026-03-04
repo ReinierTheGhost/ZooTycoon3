@@ -11,7 +11,7 @@ import static org.lwjgl.glfw.GLFW.*;
 public class EngineManager {
 
     public static final long NANOSECOND = 1000000000L;
-    public static final float FRAME_RATE = 1000;
+    public static final float FRAME_RATE = 160;
 
     private static int fps;
     private static float frameTime = 1.0f / FRAME_RATE;
