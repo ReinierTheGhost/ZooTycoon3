@@ -100,12 +100,19 @@ public class WindowManager {
 
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_STENCIL_TEST);
+
+        glViewport(0, 0, width, height);
+        updateProjectionMatrix();
+        setResize(false);
 //        glEnable(GL_CULL_FACE);
 //        glCullFace(GL_BACK);
     }
 
     public void update() {
         glfwSwapBuffers(window);
+    }
+
+    public void pollEvents() {
         glfwPollEvents();
     }
 

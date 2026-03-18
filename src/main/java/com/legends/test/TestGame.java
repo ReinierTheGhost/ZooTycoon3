@@ -37,6 +37,7 @@ public class TestGame implements ILogic {
     @Override
     public void init() throws Exception {
         renderer.init();
+        camera.setPosition(0, 0, 2.5f);
 
         /**
          * array is a list of 3D positions. Every 3 floats = 1 vertex:
@@ -135,6 +136,7 @@ public class TestGame implements ILogic {
     public void render() {
         if (window.isResize()){
             glViewport(0, 0, window.getWidth(), window.getHeight());
+            window.updateProjectionMatrix();
             window.setResize(true);
         }
 

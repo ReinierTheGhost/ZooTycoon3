@@ -49,6 +49,8 @@ public class EngineManager {
         double unprocessedTime = 0;
 
         while (isRunning){
+            window.pollEvents();
+
             boolean render = false;
             long startTime = System.nanoTime();
             long passedTime = startTime - lastTime;
