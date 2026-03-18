@@ -41,6 +41,51 @@ public class EngineManager {
         run();
     }
 
+//    public void run() {
+//        this.isRunning = true;
+//        int frames = 0;
+//        long frameCounter = 0;
+//        long lastTime = System.nanoTime();
+//        double unprocessedTime = 0;
+//
+//        while (isRunning){
+//            window.pollEvents();
+//
+//            boolean render = false;
+//            long startTime = System.nanoTime();
+//            long passedTime = startTime - lastTime;
+//            lastTime = startTime;
+//
+//            unprocessedTime += passedTime / (double) NANOSECOND;
+//            frameCounter += passedTime;
+//
+//            input();
+//
+//            while (unprocessedTime > frameTime) {
+//                render = true;
+//                unprocessedTime -= frameTime;
+//
+//                if (window.windowShouldClose())
+//                    stop();
+//
+//                if (frameCounter >= NANOSECOND) {
+//                    setFps(frames);
+//                    window.setTitle(Constants.TITLE + getFps());
+//                    frames = 0;
+//                    frameCounter = 0;
+//                }
+//            }
+//
+//            if(render){
+//                update(frameTime);
+//                render();
+//                frames++;
+//            }
+//        }
+//
+//        cleanup();
+//    }
+
     public void run() {
         this.isRunning = true;
         int frames = 0;
@@ -48,10 +93,7 @@ public class EngineManager {
         long lastTime = System.nanoTime();
         double unprocessedTime = 0;
 
-        while (isRunning){
-            window.pollEvents();
-
-            boolean render = false;
+        while (isRunning) {
             long startTime = System.nanoTime();
             long passedTime = startTime - lastTime;
             lastTime = startTime;
@@ -59,27 +101,28 @@ public class EngineManager {
             unprocessedTime += passedTime / (double) NANOSECOND;
             frameCounter += passedTime;
 
-            input();
+            window.pollEvents();
 
-            while (unprocessedTime > frameTime) {
-                render = true;
-                unprocessedTime -= frameTime;
-
-                if (window.windowShouldClose())
-                    stop();
-
-                if (frameCounter >= NANOSECOND) {
-                    setFps(frames);
-                    window.setTitle(Constants.TITLE + getFps());
-                    frames = 0;
-                    frameCounter = 0;
-                }
+            if (window.windowShouldClose()) {
+                stop();
             }
 
-            if(render){
-                update(frameTime);
-                render();
-                frames++;
+            while (unprocessedTime >= frameTime) {
+                mouseInput.input();
+                gameLogic.input();
+                gameLogic.update(frameTime, mouseInput);
+                unprocessedTime -= frameTime;
+            }
+
+            gameLogic.render();
+            window.update();
+            frames++;
+
+            if (frameCounter >= NANOSECOND) {
+                setFps(frames);
+                window.setTitle(Constants.TITLE + " | FPS: " + getFps());
+                frames = 0;
+                frameCounter = 0;
             }
         }
 

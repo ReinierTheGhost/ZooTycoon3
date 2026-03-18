@@ -27,12 +27,8 @@ public class MouseInput {
         });
 
         glfwSetMouseButtonCallback(Main.getWindow().getWindow(), (window, button, action, mods) -> {
-            if (button == GLFW_MOUSE_BUTTON_1) {
-                leftButtonPressed = action == GLFW_PRESS;
-            }
-            if (button == GLFW_MOUSE_BUTTON_2) {
-                rightButtonPressed = action == GLFW_PRESS;
-            }
+            leftButtonPressed = button == GLFW_MOUSE_BUTTON_1 && action == GLFW_PRESS;
+            rightButtonPressed = button == GLFW_MOUSE_BUTTON_2 && action == GLFW_PRESS;
         });
     }
 
