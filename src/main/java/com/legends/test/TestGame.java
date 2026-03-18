@@ -4,14 +4,16 @@ import com.legends.*;
 import com.legends.entity.Entity;
 import com.legends.entity.Model;
 import com.legends.entity.Texture;
+import org.joml.Vector2f;
 import org.joml.Vector3f;
 
+import static com.legends.utils.Constants.*;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 
 public class TestGame implements ILogic {
 
-    private static final float CAMERA_MOVE_SPEED = 0.05f;
+
 
     private final RenderManager renderer;
     private final WindowManager window;
@@ -36,6 +38,10 @@ public class TestGame implements ILogic {
     public void init() throws Exception {
         renderer.init();
 
+        /**
+         * array is a list of 3D positions. Every 3 floats = 1 vertex:
+         * x, y, z
+         */
         float[] vertices = new float[] {
                 -0.5f, 0.5f, 0.5f,
                 -0.5f, -0.5f, 0.5f,
@@ -90,8 +96,8 @@ public class TestGame implements ILogic {
         };
 
         Model model = loader.loadModel(vertices, textureCoords, indices);
-        model.setTexture(new Texture(loader.loadTexture("/textures/background.png")));
-        entity = new Entity(model, new Vector3f(0, 0, -5), new Vector3f(0, 0, 0), 1);
+        model.setTexture(new Texture(loader.loadTexture("/textures/grass_block.png")));
+        entity = new Entity(model, new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), 1);
     }
 
     @Override
@@ -115,9 +121,13 @@ public class TestGame implements ILogic {
     }
 
     @Override
-    public void update() {
+    public void update(float interval, MouseInput mouseInput) {
         camera.movePosition(cameraInc.x * CAMERA_MOVE_SPEED, cameraInc.y* CAMERA_MOVE_SPEED, cameraInc.z* CAMERA_MOVE_SPEED);
 
+        if(mouseInput.isRightButtonPressed()){
+            Vector2f rotVec = mouseInput.getDisplVec();
+            camera.moveRotation(rotVec.x * MOUSE_SENSITIVITY, rotVec.y * MOUSE_SENSITIVITY, 0);
+        }
         entity.incRotation(0.0f, 0.5f, 0.0f);
     }
 
