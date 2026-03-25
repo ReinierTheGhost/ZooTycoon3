@@ -39,65 +39,9 @@ public class TestGame implements ILogic {
         renderer.init();
         camera.setPosition(0, 0, 2.5f);
 
-        /**
-         * array is a list of 3D positions. Every 3 floats = 1 vertex:
-         * x, y, z
-         */
-        float[] vertices = new float[] {
-                -0.5f, 0.5f, 0.5f,
-                -0.5f, -0.5f, 0.5f,
-                0.5f, -0.5f, 0.5f,
-                0.5f, 0.5f, 0.5f,
-                -0.5f, 0.5f, -0.5f,
-                0.5f, 0.5f, -0.5f,
-                -0.5f, -0.5f, -0.5f,
-                0.5f, -0.5f, -0.5f,
-                -0.5f, 0.5f, -0.5f,
-                0.5f, 0.5f, -0.5f,
-                -0.5f, 0.5f, 0.5f,
-                0.5f, 0.5f, 0.5f,
-                0.5f, 0.5f, 0.5f,
-                0.5f, -0.5f, 0.5f,
-                -0.5f, 0.5f, 0.5f,
-                -0.5f, -0.5f, 0.5f,
-                -0.5f, -0.5f, -0.5f,
-                0.5f, -0.5f, -0.5f,
-                -0.5f, -0.5f, 0.5f,
-                0.5f, -0.5f, 0.5f,
-        };
-        float[] textureCoords = new float[]{
-                0.0f, 0.0f,
-                0.0f, 0.5f,
-                0.5f, 0.5f,
-                0.5f, 0.0f,
-                0.0f, 0.0f,
-                0.5f, 0.0f,
-                0.0f, 0.5f,
-                0.5f, 0.5f,
-                0.0f, 0.5f,
-                0.5f, 0.5f,
-                0.0f, 1.0f,
-                0.5f, 1.0f,
-                0.0f, 0.0f,
-                0.0f, 0.5f,
-                0.5f, 0.0f,
-                0.5f, 0.5f,
-                0.5f, 0.0f,
-                1.0f, 0.0f,
-                0.5f, 0.5f,
-                1.0f, 0.5f,
-        };
-        int[] indices = new int[]{
-                0, 1, 3, 3, 1, 2,
-                8, 10, 11, 9, 8, 11,
-                12, 13, 7, 5, 12, 7,
-                14, 15, 6, 4, 14, 6,
-                16, 18, 19, 17, 16, 19,
-                4, 6, 7, 5, 4, 7,
-        };
 
-        Model model = loader.loadModel(vertices, textureCoords, indices);
-        model.setTexture(new Texture(loader.loadTexture("/textures/grass_block.png")));
+        Model model = loader.loadOBJModel("/models/red_panda_adult.obj");
+        model.setTexture(new Texture(loader.loadTexture("/textures/animals/red_panda_adult.png")));
         entity = new Entity(model, new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), 1);
     }
 
