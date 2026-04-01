@@ -1,4 +1,4 @@
-package com.legends;
+package com.legends.core;
 
 import com.legends.entity.Model;
 import com.legends.utils.Utils;
@@ -92,7 +92,7 @@ public class ObjectLoader {
 
         int[] indicesArr = indices.stream().mapToInt((Integer v) -> v).toArray();
 
-        return loadModel(verticesArr, texCordArr, indicesArr);
+        return loadModel(verticesArr, texCordArr, normalsArr, indicesArr);
 
     }
 
@@ -133,11 +133,12 @@ public class ObjectLoader {
         faces.add(facesVec);
     }
 
-    public Model loadModel(float[] vertices, float[] texturesCoords, int[] indices){
+    public Model loadModel(float[] vertices, float[] texturesCoords, float[] normals, int[] indices){
         int id = createVAO();
         storeIndicesBuffer(indices);
         storeDataInAttribList(0, 3, vertices);
         storeDataInAttribList(1, 2, texturesCoords);
+        storeDataInAttribList(2, 3, normals);
         unbind();
         return new Model(id, indices.length);
     }

@@ -1,6 +1,6 @@
 package com.legends.utils;
 
-import com.legends.Camera;
+import com.legends.core.Camera;
 import com.legends.entity.Entity;
 import org.joml.Math;
 import org.joml.Matrix4f;

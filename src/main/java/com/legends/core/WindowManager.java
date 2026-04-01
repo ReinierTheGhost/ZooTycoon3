@@ -1,4 +1,4 @@
-package com.legends;
+package com.legends.core;
 
 import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -104,8 +104,8 @@ public class WindowManager {
         glViewport(0, 0, width, height);
         updateProjectionMatrix();
         setResize(false);
-//        glEnable(GL_CULL_FACE);
-//        glCullFace(GL_BACK);
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_BACK);
     }
 
     public void update() {

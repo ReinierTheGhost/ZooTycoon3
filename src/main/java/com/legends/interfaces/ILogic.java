@@ -1,4 +1,6 @@
-package com.legends;
+package com.legends.interfaces;
+
+import com.legends.core.MouseInput;
 
 public interface ILogic {
 

@@ -1,10 +1,10 @@
-package com.legends;
+package com.legends.core;
 
+import com.legends.interfaces.ILogic;
+import com.legends.Main;
 import com.legends.utils.Constants;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
-
-import java.awt.*;
 
 import static org.lwjgl.glfw.GLFW.*;
 

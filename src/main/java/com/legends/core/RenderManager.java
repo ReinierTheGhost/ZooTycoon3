@@ -1,10 +1,12 @@
-package com.legends;
+package com.legends.core;
 
+import com.legends.Main;
 import com.legends.entity.Entity;
-import com.legends.entity.Model;
+import com.legends.utils.Constants;
 import com.legends.utils.Transformation;
 import com.legends.utils.Utils;
 
+import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL30.*;
 
 public class RenderManager {
@@ -24,6 +26,8 @@ public class RenderManager {
         shader.createUniform("transformationMatrix");
         shader.createUniform("projectionMatrix");
         shader.createUniform("viewMatrix");
+        shader.createUniform("ambientLight");
+        shader.createMaterialUniform("material");
     }
 
     public void render(Entity entity, Camera camera){
@@ -33,14 +37,18 @@ public class RenderManager {
         shader.setUniform("transformationMatrix", Transformation.createTransformationMatrix(entity));
         shader.setUniform("projectionMatrix", window.getProjectionMatrix());
         shader.setUniform("viewMatrix", Transformation.getViewMatrix(camera));
+        shader.setUniform("material", entity.getModel().getMaterial());
+        shader.setUniform("ambientLight", Constants.AMBIENT_LIGHT);
         glBindVertexArray(entity.getModel().getId());
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);
+        glEnableVertexAttribArray(2);
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, entity.getModel().getTexture().getId());
+        glBindTexture(GL_TEXTURE_2D, entity.getModel().getMaterial().getTexture().getId());
         glDrawElements(GL_TRIANGLES, entity.getModel().getVertexCount(), GL_UNSIGNED_INT, 0);
         glDisableVertexAttribArray(0);
         glDisableVertexAttribArray(1);
+        glDisableVertexAttribArray(2);
         glBindVertexArray(0);
         shader.unbind();
     }

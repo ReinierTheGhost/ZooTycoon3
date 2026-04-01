@@ -1,4 +1,4 @@
-package com.legends;
+package com.legends.core;
 
 import org.joml.Vector3f;
 

@@ -1,9 +1,11 @@
 package com.legends.test;
 
 import com.legends.*;
+import com.legends.core.*;
 import com.legends.entity.Entity;
 import com.legends.entity.Model;
 import com.legends.entity.Texture;
+import com.legends.interfaces.ILogic;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -41,7 +43,7 @@ public class TestGame implements ILogic {
 
 
         Model model = loader.loadOBJModel("/models/red_panda_adult.obj");
-        model.setTexture(new Texture(loader.loadTexture("/textures/animals/red_panda_adult.png")));
+        model.setTexture(new Texture(loader.loadTexture("/textures/animals/red_panda_adult.png")), 1f);
         entity = new Entity(model, new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), 1);
     }
 
@@ -73,7 +75,7 @@ public class TestGame implements ILogic {
             Vector2f rotVec = mouseInput.getDisplVec();
             camera.moveRotation(rotVec.x * MOUSE_SENSITIVITY, rotVec.y * MOUSE_SENSITIVITY, 0);
         }
-        entity.incRotation(0.0f, 0.5f, 0.0f);
+        entity.incRotation(0.0f, 0.25f, 0.0f);
     }
 
     @Override
@@ -84,7 +86,6 @@ public class TestGame implements ILogic {
             window.setResize(true);
         }
 
-        window.setClearColor(0.0f,0.0f,0.0f, 0.0f);
         renderer.render(entity, camera);
     }
 

@@ -1,5 +1,6 @@
-package com.legends;
+package com.legends.core;
 
+import com.legends.Main;
 import org.joml.Vector2f;
 
 import static org.lwjgl.glfw.GLFW.*;

@@ -1,5 +1,7 @@
 package com.legends;
 
+import com.legends.core.EngineManager;
+import com.legends.core.WindowManager;
 import com.legends.test.TestGame;
 import com.legends.utils.Constants;
 
