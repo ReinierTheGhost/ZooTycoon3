@@ -36,6 +36,7 @@ public class ObjectLoader {
 
         for(String line : lines) {
             String[] tokens = line.split("\\s+");
+            if (tokens.length == 0 || tokens[0].isEmpty()) continue;
             switch (tokens[0]) {
                 case "v":
                     //vertices
@@ -75,16 +76,15 @@ public class ObjectLoader {
 
         List<Integer> indices = new ArrayList<>();
         float[] verticesArr = new float[vertices.size() * 3];
-        int i =  0;
-        for(Vector3f pos : vertices) {
+        for (int i = 0; i < vertices.size(); i++) {
+            Vector3f pos = vertices.get(i);
             verticesArr[i * 3] = pos.x;
             verticesArr[i * 3 + 1] = pos.y;
             verticesArr[i * 3 + 2] = pos.z;
-            i++;
         }
 
-        float[] texCordArr = new float[textures.size() * 2];
-        float[] normalsArr = new float[normals.size() * 3];
+        float[] texCordArr = new float[vertices.size() * 2];
+        float[] normalsArr = new float[vertices.size() * 3];
 
         for(Vector3i face : faces){
             processVertex(face.x, face.y, face.z, textures, normals, indices, texCordArr, normalsArr);
@@ -122,9 +122,10 @@ public class ObjectLoader {
         pos = Integer.parseInt(lineToken[0]) - 1;
         if (length > 1){
             String textCoords = lineToken[1];
-            coords = textCoords.length() > 0 ? Integer.parseInt(textCoords) : -1;
+            coords = textCoords.length() > 0 ? Integer.parseInt(textCoords) - 1 : -1;
             if (length > 2){
-                normals = Integer.parseInt(lineToken[2]) - 1;
+                String normalToken = lineToken[2];
+                normals = normalToken.length() > 0 ? Integer.parseInt(normalToken) - 1 : -1;
             }
         }
 

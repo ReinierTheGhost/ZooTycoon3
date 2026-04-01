@@ -37,7 +37,7 @@ public class TestGame implements ILogic {
     @Override
     public void init() throws Exception {
         renderer.init();
-        camera.setPosition(0, 0, 2.5f);
+        camera.setPosition(0, 1, 4f);
 
 
         Model model = loader.loadOBJModel("/models/red_panda_adult.obj");
