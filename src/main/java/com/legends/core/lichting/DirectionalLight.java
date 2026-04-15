@@ -7,7 +7,11 @@ public class DirectionalLight {
     Vector3f color, directiom;
     private float intensity;
 
-    public DirectionalLight(Vector3f color, Vector3f direction, float intensity) {}
+    public DirectionalLight(Vector3f color, Vector3f direction, float intensity) {
+        this.color = color;
+        this.directiom = direction;
+        this.intensity = intensity;
+    }
 
     public Vector3f getColor() {
         return color;
