@@ -1,5 +1,6 @@
 package com.legends.core;
 
+import com.legends.core.lichting.DirectionalLight;
 import com.legends.entity.Material;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
@@ -35,6 +36,12 @@ public class ShaderManager {
         }
         uniforms.put(uniformName, uniformLocation);
 
+    }
+
+    public void createDirectionalLightUniform(String uniformName) throws Exception {
+        createUniform(uniformName + ".color");
+        createUniform(uniformName + ".direction");
+        createUniform(uniformName + ".intensity");
     }
 
     public void createMaterialUniform(String uniformName) throws Exception {
@@ -83,6 +90,12 @@ public class ShaderManager {
         setUniform(uniformName + ".specular", material.getSpecularColor());
         setUniform(uniformName + ".hasTexture", material.hasTexture() ? 1 : 0);
         setUniform(uniformName + ".reflectance", material.getReflectance());
+    }
+
+    public void setUniform(String uniformName, DirectionalLight directionalLight){
+        setUniform(uniformName + ".color", directionalLight.getColor());
+        setUniform(uniformName + ".direction", directionalLight.getDirectiom());
+        setUniform(uniformName + ".intensity", directionalLight.getIntensity());
     }
 
     public void createVertexShader(String shaderCode) throws Exception{
