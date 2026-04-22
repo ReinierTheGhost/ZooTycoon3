@@ -32,7 +32,7 @@ public class RenderManager {
         shader.createMaterialUniform("material");
         shader.createUniform("specularPower");
         shader.createDirectionalLightUniform("directionalLight");
-        shader.createUniform("pointLight");
+        shader.createPointLightUniform("pointLight");
     }
 
     public void render(Entity entity, Camera camera, DirectionalLight directionalLight, PointLight pointLight){
