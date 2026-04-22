@@ -1,9 +1,9 @@
 package com.legends.core;
 
 import com.legends.core.lichting.DirectionalLight;
+import com.legends.core.lichting.PointLight;
 import com.legends.entity.Material;
 import org.joml.Matrix4f;
-import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.system.MemoryStack;
@@ -52,6 +52,15 @@ public class ShaderManager {
         createUniform(uniformName + ".reflectance");
     }
 
+    public void createPointLightUniform(String uniformName) throws Exception {
+        createUniform(uniformName + ".color");
+        createUniform(uniformName + ".position");
+        createUniform(uniformName + ".constant");
+        createUniform(uniformName + ".intensity");
+        createUniform(uniformName + ".liniar");
+        createUniform(uniformName + ".exponent");
+    }
+
     public void setUniform(String uniformName, Matrix4f value){
         try(MemoryStack stack = MemoryStack.stackPush()) {
             glUniformMatrix4fv(uniforms.get(uniformName), false,
@@ -96,6 +105,15 @@ public class ShaderManager {
         setUniform(uniformName + ".color", directionalLight.getColor());
         setUniform(uniformName + ".direction", directionalLight.getDirectiom());
         setUniform(uniformName + ".intensity", directionalLight.getIntensity());
+    }
+
+    public void setUniform(String uniformName, PointLight pointLight){
+        setUniform(uniformName + ".color", pointLight.getColor());
+        setUniform(uniformName + ".position", pointLight.getPosition());
+        setUniform(uniformName + ".intensity", pointLight.getIntensity());
+        setUniform(uniformName + ".constant", pointLight.getConstant());
+        setUniform(uniformName + ".liniar", pointLight.getLinear());
+        setUniform(uniformName + ".exponent",  pointLight.getExponent());
     }
 
     public void createVertexShader(String shaderCode) throws Exception{

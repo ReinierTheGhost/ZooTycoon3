@@ -4,7 +4,7 @@ import org.joml.Vector3f;
 
 public class DirectionalLight {
 
-    Vector3f color, directiom;
+    private Vector3f color, directiom;
     private float intensity;
 
     public DirectionalLight(Vector3f color, Vector3f direction, float intensity) {

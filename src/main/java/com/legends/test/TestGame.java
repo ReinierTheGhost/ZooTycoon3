@@ -3,6 +3,7 @@ package com.legends.test;
 import com.legends.*;
 import com.legends.core.*;
 import com.legends.core.lichting.DirectionalLight;
+import com.legends.core.lichting.PointLight;
 import com.legends.entity.Entity;
 import com.legends.entity.Model;
 import com.legends.entity.Texture;
@@ -29,6 +30,7 @@ public class TestGame implements ILogic {
 
     private float lightAngle;
     private DirectionalLight directionalLight;
+    private PointLight pointLight;
 
     public TestGame() {
         this.renderer = new RenderManager();
@@ -51,9 +53,13 @@ public class TestGame implements ILogic {
         model.setTexture(new Texture(loader.loadTexture("/textures/animals/red_panda_adult.png")), 1f);
         entity = new Entity(model, new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), 1);
 
-        float lightIntensity = 0.0f;
-        Vector3f lightPosition = new Vector3f(-1, -10, 0);
+        float lightIntensity = 1.0f;
+        Vector3f lightPosition = new Vector3f(0, 0, -3.2f);
         Vector3f lightColor = new Vector3f(1, 1, 1);
+        pointLight = new PointLight(lightColor, lightPosition, lightIntensity, 0, 0, 1);
+
+        lightPosition = new Vector3f(-1, -10, 0);
+        lightColor = new Vector3f(1, 1, 1);
         directionalLight = new DirectionalLight(lightPosition, lightColor, lightIntensity);
     }
 
@@ -74,6 +80,13 @@ public class TestGame implements ILogic {
             cameraInc.y = -1;
         if (window.isKeyPressed(GLFW_KEY_X))
             cameraInc.y = 1;
+
+        if (window.isKeyPressed(GLFW_KEY_O)){
+            pointLight.getPosition().x += 0.1f;
+        }
+        if (window.isKeyPressed(GLFW_KEY_P)){
+            pointLight.getPosition().x -= 0.1f;
+        }
 
     }
 
@@ -119,7 +132,7 @@ public class TestGame implements ILogic {
             window.setResize(true);
         }
 
-        renderer.render(entity, camera, directionalLight);
+        renderer.render(entity, camera, directionalLight, pointLight);
     }
 
     @Override

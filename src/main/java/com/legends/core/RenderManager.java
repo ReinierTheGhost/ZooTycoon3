@@ -2,6 +2,7 @@ package com.legends.core;
 
 import com.legends.Main;
 import com.legends.core.lichting.DirectionalLight;
+import com.legends.core.lichting.PointLight;
 import com.legends.entity.Entity;
 import com.legends.utils.Constants;
 import com.legends.utils.Transformation;
@@ -31,9 +32,10 @@ public class RenderManager {
         shader.createMaterialUniform("material");
         shader.createUniform("specularPower");
         shader.createDirectionalLightUniform("directionalLight");
+        shader.createUniform("pointLight");
     }
 
-    public void render(Entity entity, Camera camera, DirectionalLight directionalLight){
+    public void render(Entity entity, Camera camera, DirectionalLight directionalLight, PointLight pointLight){
         clear();
         shader.bind();
         shader.setUniform("textureSampler", 0);
@@ -44,6 +46,7 @@ public class RenderManager {
         shader.setUniform("ambientLight", Constants.AMBIENT_LIGHT);
         shader.setUniform("specularPower", Constants.SPECULAR_POWER);
         shader.setUniform("directionalLight", directionalLight);
+        shader.setUniform("pointLight", pointLight);
 
         glBindVertexArray(entity.getModel().getId());
         glEnableVertexAttribArray(0);
