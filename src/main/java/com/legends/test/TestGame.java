@@ -49,8 +49,8 @@ public class TestGame implements ILogic {
         camera.setPosition(0, 1, 4f);
 
 
-        Model model = loader.loadOBJModel("/models/red_panda_adult.obj");
-        model.setTexture(new Texture(loader.loadTexture("/textures/animals/red_panda_adult.png")), 1f);
+        Model model = loader.loadOBJModel("/models/cube.obj");
+        model.setTexture(new Texture(loader.loadTexture("/textures/grass_block.png")), 1f);
         entity = new Entity(model, new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), 1);
 
         float lightIntensity = 1.0f;
