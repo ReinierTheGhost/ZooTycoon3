@@ -63,10 +63,22 @@ public class ObjectLoader {
                     break;
 
                 case "f":
-                    //faces
-                    processFaces(tokens[1], faces);
-                    processFaces(tokens[2], faces);
-                    processFaces(tokens[3], faces);
+                    // triangulate face
+                    if (tokens.length == 4) {
+                        // triangle
+                        processFaces(tokens[1], faces);
+                        processFaces(tokens[2], faces);
+                        processFaces(tokens[3], faces);
+                    } else if (tokens.length == 5) {
+                        // quad -> two triangles
+                        processFaces(tokens[1], faces);
+                        processFaces(tokens[2], faces);
+                        processFaces(tokens[3], faces);
+
+                        processFaces(tokens[1], faces);
+                        processFaces(tokens[3], faces);
+                        processFaces(tokens[4], faces);
+                    }
                     break;
                 default:
                     break;

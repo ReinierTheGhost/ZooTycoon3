@@ -1,7 +1,7 @@
-# Blender 4.1.1 MTL File: 'None'
+# Blender 4.1.1 MTL File: 'cube.blend'
 # www.blender.org
 
-newmtl Material.000001
+newmtl m_1b344141-24a6-21f1-224a-cb407a2c6e10
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Ks 0.000000 0.000000 0.000000
@@ -9,4 +9,4 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.500000
 d 1.000000
 illum 1
-map_Kd C:/Users/reini/Desktop/modding/ZooTycoon3/src/main/resources/textures/grass_block.png
+map_Kd grass_block.png
